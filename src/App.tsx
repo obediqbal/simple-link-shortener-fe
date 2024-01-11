@@ -5,10 +5,14 @@ function App() {
   const [urlText, setUrlText] = useState('');
   const [inputOriginalText, setInputOriginalText] = useState('');
   const [inputShortText, setInputShortText] = useState('');
+  const [loading, setLoading] = useState(false);
 
   const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
 
+    if(loading) return;
+
+    setLoading(true);
     setInputOriginalText('');
     setInputShortText('');
     const formData = new URLSearchParams();
@@ -30,6 +34,7 @@ function App() {
       .then(data => {
         console.log(data);
         setUrlText(data);
+        setLoading(false);
         return data;
       })
       .catch(error => {
