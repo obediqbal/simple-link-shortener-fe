@@ -11,7 +11,9 @@ function App() {
     const formData = new URLSearchParams();
     formData.append('original_url', inputOriginalText);
 
-    await fetch('http://localhost:8080/shorten', {
+    const service = import.meta.env.VITE_SHORT_SERVICE_URL;
+
+    await fetch(service, {
       method: 'POST',
       headers: {
         'Content-Type': 'application/x-www-form-urlencoded'
