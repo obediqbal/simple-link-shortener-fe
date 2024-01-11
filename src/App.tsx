@@ -2,7 +2,7 @@ import './App.css'
 import React, {useEffect, useState} from 'react';
 
 function App() {
-  const [urlText, setUrlText] = useState('');
+  const [urlText, setUrlText] = useState(import.meta.env.VITE_SHORT_RESULT_URL+'/xxxxxx');
   const [inputOriginalText, setInputOriginalText] = useState('');
   const [inputShortText, setInputShortText] = useState('');
   const [loading, setLoading] = useState(false);
@@ -28,23 +28,22 @@ function App() {
     })
     .then(response => {
         return response.text();
-      })
-      .then(data => {
+    })
+    .then(data => {
         console.log(data);
         setUrlText(data);
         setInputOriginalText('');
         setInputShortText('');
         setLoading(false);
         return data;
-      })
-      .catch(error => {
+    })
+    .catch(error => {
         console.error('Error making POST request ', error.message)
       });
     }
   
   useEffect(() => {
     if(urlText.length == 0){
-      setUrlText('xxxxxx');
     }
   }, [urlText]);
     
@@ -72,14 +71,19 @@ function App() {
             onChange={(event) => {
               if(parseInt(import.meta.env.VITE_MAX_SHORT_URL_LEN) >= event.target.value.length){
                 setInputShortText(event.target.value)
-                setUrlText(event.target.value)
+                if(event.target.value.length == 0){
+                  setUrlText(import.meta.env.VITE_SHORT_RESULT_URL+'/xxxxxx');
+                }
+                else{
+                  setUrlText(import.meta.env.VITE_SHORT_RESULT_URL+'/'+event.target.value)
+                }
               }
             }}>
           </input>
         </div>
         <button type='submit'>Shorten</button>
       </form>
-      <p id='result'>{import.meta.env.VITE_SHORT_RESULT_URL+'/'+urlText}</p>
+      <p id='result'>{urlText}</p>
     </>
   )
 }
