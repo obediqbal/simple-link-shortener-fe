@@ -13,14 +13,12 @@ function App() {
     if(loading) return;
 
     setLoading(true);
-    setInputOriginalText('');
-    setInputShortText('');
     const formData = new URLSearchParams();
     formData.append('original_url', inputOriginalText);
     formData.append('short_url', inputShortText);
-
+    
     const service = import.meta.env.VITE_SHORT_SERVICE_URL;
-
+    
     await fetch(service, {
       method: 'POST',
       headers: {
@@ -28,20 +26,22 @@ function App() {
       },
       body: formData.toString()
     })
-      .then(response => {
+    .then(response => {
         return response.text();
       })
       .then(data => {
         console.log(data);
         setUrlText(data);
+        setInputOriginalText('');
+        setInputShortText('');
         setLoading(false);
         return data;
       })
       .catch(error => {
         console.error('Error making POST request ', error.message)
       });
-  }
-
+    }
+    
   return (
     <>
       <h1>Link Shortener</h1>
