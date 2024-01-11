@@ -41,6 +41,12 @@ function App() {
         console.error('Error making POST request ', error.message)
       });
     }
+  
+  useEffect(() => {
+    if(urlText.length == 0){
+      setUrlText('xxxxxx');
+    }
+  }, [urlText]);
     
   return (
     <>
@@ -64,14 +70,16 @@ function App() {
             placeholder='gugel'
             value={inputShortText}
             onChange={(event) => {
-              if(parseInt(import.meta.env.VITE_MAX_SHORT_URL_LEN) >= event.target.value.length)
+              if(parseInt(import.meta.env.VITE_MAX_SHORT_URL_LEN) >= event.target.value.length){
                 setInputShortText(event.target.value)
+                setUrlText(event.target.value)
+              }
             }}>
           </input>
         </div>
         <button type='submit'>Shorten</button>
       </form>
-      <p id='result'>{urlText}</p>
+      <p id='result'>{import.meta.env.VITE_SHORT_RESULT_URL+'/'+urlText}</p>
     </>
   )
 }
