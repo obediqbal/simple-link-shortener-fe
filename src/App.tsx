@@ -9,6 +9,8 @@ function App() {
   const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
 
+    setInputOriginalText('');
+    setInputShortText('');
     const formData = new URLSearchParams();
     formData.append('original_url', inputOriginalText);
     formData.append('short_url', inputShortText);
@@ -28,8 +30,6 @@ function App() {
       .then(data => {
         console.log(data);
         setUrlText(data);
-        setInputOriginalText('');
-        setInputShortText('');
         return data;
       })
       .catch(error => {
