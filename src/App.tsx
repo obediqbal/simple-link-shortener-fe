@@ -1,33 +1,52 @@
-import { useState } from 'react'
-import reactLogo from './assets/react.svg'
-import viteLogo from '/vite.svg'
 import './App.css'
+import React, {useState} from 'react';
 
 function App() {
-  const [count, setCount] = useState(0)
+  const [urlText, setUrlText] = useState('');
+  const [inputOriginalText, setInputOriginalText] = useState('');
+
+  const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
+    event.preventDefault();
+
+    const formData = new URLSearchParams();
+    formData.append('original_url', inputOriginalText);
+
+    await fetch('http://localhost:8080/shorten', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/x-www-form-urlencoded'
+      },
+      body: formData.toString()
+    })
+      .then(response => {
+        if(!response.ok){
+          throw new Error("Not OK");
+        }
+        return response.text();
+      })
+      .then(data => {
+        console.log(data);
+        setUrlText(data);
+        return data;
+      })
+      .catch(error => {
+        console.error('Error making POST request ', error.message)
+      });
+  }
 
   return (
     <>
-      <div>
-        <a href="https://vitejs.dev" target="_blank">
-          <img src={viteLogo} className="logo" alt="Vite logo" />
-        </a>
-        <a href="https://react.dev" target="_blank">
-          <img src={reactLogo} className="logo react" alt="React logo" />
-        </a>
-      </div>
-      <h1>Vite + React</h1>
-      <div className="card">
-        <button onClick={() => setCount((count) => count + 1)}>
-          count is {count}
-        </button>
-        <p>
-          Edit <code>src/App.tsx</code> and save to test HMR
-        </p>
-      </div>
-      <p className="read-the-docs">
-        Click on the Vite and React logos to learn more
-      </p>
+      <h1>Link Shortener</h1>
+      <form id='shortenerForm' onSubmit={handleSubmit}>
+        <input id='originalURL'
+         name='originalURL'
+        type='text'
+        placeholder='https://google.com'
+        value={inputOriginalText}
+        onChange={(event) => setInputOriginalText(event.target.value)}></input>
+        <button type='submit'>Shorten</button>
+      </form>
+      <p id='result'>{urlText}</p>
     </>
   )
 }

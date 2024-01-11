@@ -35,6 +35,17 @@ h1 {
   line-height: 1.1;
 }
 
+input {
+  width: 80%;
+  padding: 15px;
+}
+
+form {
+  display: flex;
+  width: 800px;
+  gap: 30px;
+}
+
 button {
   border-radius: 8px;
   border: 1px solid transparent;
