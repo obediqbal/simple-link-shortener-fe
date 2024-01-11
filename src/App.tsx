@@ -28,6 +28,8 @@ function App() {
       .then(data => {
         console.log(data);
         setUrlText(data);
+        setInputOriginalText('');
+        setInputShortText('');
         return data;
       })
       .catch(error => {
