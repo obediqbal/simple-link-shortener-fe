@@ -36,14 +36,33 @@ h1 {
 }
 
 input {
-  width: 80%;
   padding: 15px;
 }
 
 form {
   display: flex;
   width: 800px;
-  gap: 30px;
+  gap: 15px;
+}
+
+form>div {
+  display: flex;
+  flex: 1;
+  flex-direction: column;
+}
+
+#originalContainer {
+  flex-basis: 75%;
+  flex-grow: 1;
+}
+
+#shortContainer {
+  flex-basis: 25%;
+  flex-grow: 1;
+}
+
+label {
+  text-align: left;
 }
 
 button {
